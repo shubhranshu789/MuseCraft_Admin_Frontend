@@ -15,9 +15,9 @@ import ProductCarausal from "../app/Component/SectionComponents/ProductCoarausal
 export default function Home() {
   return (
     <main className="min-h-screen ">
-      <Navbar />
-      <Home2 />
-      {/* <DashBoard /> */}
+      {/* <Navbar /> */}
+      {/* <Home2 /> */}
+      <DashBoard />
       {/* <ProductCarausal/>
       <Hero />
       <Features />

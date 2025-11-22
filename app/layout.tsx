@@ -67,8 +67,8 @@ export default function RootLayout({
         {children}
         <Analytics />
 
-        <WhatsAppFloat />
-        <Chatbot allProducts={allProducts} />
+        {/* <WhatsAppFloat /> */}
+        {/* <Chatbot allProducts={allProducts} /> */}
       
       </body>
 
