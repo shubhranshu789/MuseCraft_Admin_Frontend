@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Search, Trash2, Eye } from 'lucide-react';
+import { Search, Trash2, Eye, X } from 'lucide-react';
 import UserDetailsModal from '@/components/UserDetailsModal';
 import Navbar from "../navbar/page"
 
@@ -55,87 +55,150 @@ export default function UsersManagement() {
     };
 
     return (
-       <div>
+       <div className="min-h-screen bg-gray-50">
         <Navbar/>
-         <div className="p-8">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold">Users Management</h1>
+         <div className="p-3 md:p-6 lg:p-8">
+            <div className="flex justify-between items-center mb-4 md:mb-6">
+                <h1 className="text-xl md:text-3xl font-bold">Users Management</h1>
             </div>
 
-            <form onSubmit={(e) => { e.preventDefault(); setCurrentPage(1); fetchUsers(); }} className="mb-6">
+            <form onSubmit={(e) => { e.preventDefault(); setCurrentPage(1); fetchUsers(); }} className="mb-4 md:mb-6">
                 <div className="relative">
-                    <Search className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
+                    <Search className="absolute left-3 top-2.5 md:top-3 text-gray-400 w-4 h-4 md:w-5 md:h-5" />
                     <input
                         type="text"
-                        placeholder="Search by name, email, or username..."
+                        placeholder="Search users..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full pl-9 md:pl-10 pr-3 md:pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
                     />
                 </div>
             </form>
 
             {loading ? (
-                <div>Loading...</div>
+                <div className="text-center py-8">Loading...</div>
             ) : (
                 <>
-                    <div className="bg-white rounded-lg shadow overflow-hidden">
-                        <table className="w-full">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Username</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Orders</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Joined</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200">
-                                {users.map((user) => (
-                                    <tr key={user._id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4">{user.name}</td>
-                                        <td className="px-6 py-4">{user.userName}</td>
-                                        <td className="px-6 py-4">{user.email}</td>
-                                        <td className="px-6 py-4">{user.placedOrders?.length || 0}</td>
-                                        <td className="px-6 py-4">
-                                            {new Date(user.createdAt).toLocaleDateString()}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex gap-2">
-                                                <button
-                                                    onClick={() => setSelectedUserId(user._id)}
-                                                    className="text-blue-600 hover:text-blue-800"
-                                                >
-                                                    <Eye className="w-5 h-5" />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(user._id)}
-                                                    className="text-red-600 hover:text-red-800"
-                                                >
-                                                    <Trash2 className="w-5 h-5" />
-                                                </button>
-                                            </div>
-                                        </td>
+                    {/* Desktop Table View - Hidden on Mobile */}
+                    <div className="hidden lg:block bg-white rounded-lg shadow overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <table className="w-full">
+                                <thead className="bg-gray-50">
+                                    <tr>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Username</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Orders</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Joined</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody className="divide-y divide-gray-200">
+                                    {users.map((user) => (
+                                        <tr key={user._id} className="hover:bg-gray-50">
+                                            <td className="px-6 py-4">{user.name}</td>
+                                            <td className="px-6 py-4">{user.userName}</td>
+                                            <td className="px-6 py-4">{user.email}</td>
+                                            <td className="px-6 py-4">{user.placedOrders?.length || 0}</td>
+                                            <td className="px-6 py-4">
+                                                {new Date(user.createdAt).toLocaleDateString()}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex gap-2">
+                                                    <button
+                                                        onClick={() => setSelectedUserId(user._id)}
+                                                        className="text-blue-600 hover:text-blue-800"
+                                                    >
+                                                        <Eye className="w-5 h-5" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete(user._id)}
+                                                        className="text-red-600 hover:text-red-800"
+                                                    >
+                                                        <Trash2 className="w-5 h-5" />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
-                    <div className="mt-6 flex justify-center gap-2">
+                    {/* Mobile Card View - Visible only on Mobile */}
+                    <div className="lg:hidden space-y-3">
+                        {users.map((user) => (
+                            <div 
+                                key={user._id} 
+                                className="bg-white rounded-lg shadow p-4 border border-gray-200"
+                            >
+                                <div className="flex justify-between items-start mb-3">
+                                    <div className="flex-1 min-w-0">
+                                        <h3 className="font-semibold text-base truncate">{user.name}</h3>
+                                        <p className="text-xs text-gray-500 truncate">@{user.userName}</p>
+                                    </div>
+                                    <div className="flex gap-2 ml-2">
+                                        <button
+                                            onClick={() => setSelectedUserId(user._id)}
+                                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"
+                                        >
+                                            <Eye className="w-4 h-4" />
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(user._id)}
+                                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <div>
+                                        <p className="text-xs text-gray-500">Email</p>
+                                        <p className="text-sm font-medium truncate">{user.email}</p>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <div>
+                                            <p className="text-xs text-gray-500">Total Orders</p>
+                                            <p className="text-sm font-semibold text-blue-600">
+                                                {user.placedOrders?.length || 0}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-gray-500">Joined</p>
+                                            <p className="text-sm font-medium">
+                                                {new Date(user.createdAt).toLocaleDateString('en-IN', { 
+                                                    day: '2-digit', 
+                                                    month: 'short',
+                                                    year: 'numeric'
+                                                })}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Pagination - Mobile Responsive */}
+                    <div className="mt-4 md:mt-6 flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-3">
                         <button
                             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                             disabled={currentPage === 1}
-                            className="px-4 py-2 border rounded disabled:opacity-50"
+                            className="w-full sm:w-auto px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base hover:bg-gray-50 transition"
                         >
                             Previous
                         </button>
-                        <span className="px-4 py-2">Page {currentPage} of {totalPages}</span>
+                        <span className="px-4 py-2 text-sm md:text-base font-medium">
+                            Page {currentPage} of {totalPages}
+                        </span>
                         <button
                             onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                             disabled={currentPage === totalPages}
-                            className="px-4 py-2 border rounded disabled:opacity-50"
+                            className="w-full sm:w-auto px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base hover:bg-gray-50 transition"
                         >
                             Next
                         </button>
